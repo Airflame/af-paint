@@ -1,7 +1,6 @@
 package GUI;
 
 import Filtering.Effect;
-import Filtering.Filter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -57,7 +56,7 @@ public class PaintPanel extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g.create();
-        if(image != null) {
+        if (image != null) {
             g2d.drawImage(image, 0, 0, this);
         }
         for (List<Point> path : points) {
@@ -110,8 +109,7 @@ public class PaintPanel extends JPanel {
     }
 
     void undo() {
-        if (!points.isEmpty())
-        {
+        if (!points.isEmpty()) {
             removedPoints.add(points.get(points.size()-1));
             points.remove(points.size()-1);
             repaint();
@@ -128,12 +126,6 @@ public class PaintPanel extends JPanel {
     void applyEffect(Effect effect) {
         dumpToImage();
         setImage(effect.process(image));
-        repaint();
-    }
-
-    void applyFilter(Filter filter) {
-        dumpToImage();
-        setImage(filter.process(image));
         repaint();
     }
 

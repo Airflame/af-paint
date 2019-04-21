@@ -18,21 +18,19 @@ public class CustomFilterDialog extends JDialog {
         paintPanel = panel;
         setLocationByPlatform(true);
         setResizable(false);
-        setLayout(new BorderLayout());
 
         JPanel sizePanel = new JPanel();
         panel.setLayout(new BorderLayout());
 
-        JLabel label = new JLabel("Set size:");
         SpinnerModel model = new SpinnerNumberModel(3, 3, 9, 2);
         sizeSpinner = new JSpinner(model);
         JButton sizeButton = new JButton("OK");
         sizeButton.addActionListener((event) -> showKernelPanel());
-        sizePanel.add(label, BorderLayout.NORTH);
-        sizePanel.add(sizeSpinner, BorderLayout.CENTER);
-        sizePanel.add(sizeButton, BorderLayout.SOUTH);
+        sizePanel.add(new JLabel("Size:"));
+        sizePanel.add(sizeSpinner);
+        sizePanel.add(sizeButton);
 
-        add(sizePanel, BorderLayout.NORTH);
+        add(sizePanel);
         pack();
     }
 
@@ -68,6 +66,6 @@ public class CustomFilterDialog extends JDialog {
             }
         }
         setVisible(false);
-        paintPanel.applyFilter(new CustomFilter(kernel));
+        paintPanel.applyEffect(new CustomFilter(kernel));
     }
 }

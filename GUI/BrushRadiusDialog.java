@@ -19,6 +19,7 @@ public class BrushRadiusDialog extends JDialog {
         spinner = new JSpinner(model);
         JButton button = new JButton("OK");
         button.addActionListener((event) -> getRadius());
+        brushPanel.add(new JLabel("Radius:"));
         brushPanel.add(spinner);
         brushPanel.add(button);
         add(brushPanel);

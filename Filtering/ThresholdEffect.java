@@ -3,7 +3,17 @@ package Filtering;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class GreyscaleEffect implements Effect {
+public class ThresholdEffect implements Effect {
+    private int threshold;
+    private Color brightColor;
+    private Color darkColor;
+
+    public ThresholdEffect(int t, Color bc, Color dc) {
+        threshold = t;
+        brightColor = bc;
+        darkColor = dc;
+    }
+
     @Override
     public BufferedImage process(BufferedImage image) {
         BufferedImage result = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
@@ -15,8 +25,10 @@ public class GreyscaleEffect implements Effect {
             {
                 Color c = new Color(image.getRGB(i, j));
                 int w = (c.getRed() + c.getBlue() + c.getGreen())/3;
-                c = new Color(w, w, w);
-                result.setRGB(i, j, c.getRGB());
+                if(w > threshold)
+                    result.setRGB(i, j, brightColor.getRGB());
+                else
+                    result.setRGB(i, j, darkColor.getRGB());
             }
         }
         return result;
