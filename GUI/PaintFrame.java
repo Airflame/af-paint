@@ -74,6 +74,7 @@ public class PaintFrame extends JFrame {
         greyscaleItem.addActionListener((event) -> panel.applyEffect(new GreyscaleEffect()));
         JMenuItem thresholdItem = new JMenuItem("Thresholding");
         thresholdItem.addActionListener((event) -> {
+            panel.dumpToImage();
             ThresholdEffectDialog trd = new ThresholdEffectDialog(this, panel);
             trd.setVisible(true);
         });

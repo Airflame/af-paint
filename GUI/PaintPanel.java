@@ -13,6 +13,7 @@ import java.util.List;
 public class PaintPanel extends JPanel {
     private double radius;
     private BufferedImage image;
+    private BufferedImage preview;
     private List<List<Point>> points;
     private Stack<List<Point>> removedPoints;
     private Color brushColor;
@@ -70,6 +71,9 @@ public class PaintPanel extends JPanel {
                 from = p;
             }
         }
+        if (preview != null) {
+            g2d.drawImage(preview, 0, 0, this);
+        }
         g2d.dispose();
     }
 
@@ -85,6 +89,20 @@ public class PaintPanel extends JPanel {
     void setImage(BufferedImage image) {
         clearImage();
         this.image = image;
+    }
+
+    BufferedImage getImage() {
+        return image;
+    }
+
+    void removePreview() {
+        preview = null;
+        repaint();
+    }
+
+    void setPreview(BufferedImage image) {
+        preview = image;
+        repaint();
     }
 
     void chooseBrushColor() {
@@ -124,12 +142,13 @@ public class PaintPanel extends JPanel {
     }
 
     void applyEffect(Effect effect) {
-        dumpToImage();
+        if(preview == null)
+            dumpToImage();
         setImage(effect.process(image));
         repaint();
     }
 
-    private void dumpToImage() {
+    void dumpToImage() {
         BufferedImage im = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
         paint(im.getGraphics());
         setImage(im);
