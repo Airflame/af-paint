@@ -14,7 +14,7 @@ public class CustomFilterDialog extends JDialog {
     private float[][] kernel;
 
     CustomFilterDialog(JFrame owner, PaintPanel panel) {
-        super(owner, "Set custom filter");
+        super(owner, "Set custom filter", true);
         paintPanel = panel;
         setLocationByPlatform(true);
         setResizable(false);

@@ -8,7 +8,7 @@ public class BrushRadiusDialog extends JDialog {
     private JSpinner spinner;
 
     BrushRadiusDialog(JFrame owner, PaintPanel panel) {
-        super(owner, "Set brush radius");
+        super(owner, "Set brush radius", true);
         paintPanel = panel;
         setLocationByPlatform(true);
         setResizable(false);

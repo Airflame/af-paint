@@ -13,8 +13,9 @@ public class ThresholdEffectDialog extends JDialog {
     private JSlider thresholdSlider;
 
     ThresholdEffectDialog(JFrame owner, PaintPanel panel) {
-        super(owner, "Thresholding");
+        super(owner, "Thresholding", true);
         paintPanel = panel;
+        paintPanel.dumpToImage();
         brightColor = Color.WHITE;
         darkColor = Color.BLACK;
         setLocationByPlatform(true);
@@ -26,8 +27,6 @@ public class ThresholdEffectDialog extends JDialog {
             }
         });
 
-        JPanel thresholdPanel = new JPanel();
-        thresholdPanel.setLayout(new BorderLayout());
         thresholdSlider = new JSlider(JSlider.HORIZONTAL, 0,256,128);
         thresholdSlider.setMajorTickSpacing(64);
         thresholdSlider.setMinorTickSpacing(8);
@@ -35,8 +34,12 @@ public class ThresholdEffectDialog extends JDialog {
         thresholdSlider.setPaintLabels(true);
         thresholdSlider.addChangeListener((event) -> refreshPreview());
 
+        JPanel thresholdPanel = new JPanel();
+        thresholdPanel.setLayout(new BorderLayout());
+
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(1,3));
+
         JButton brightColorButton = new JButton("Bright color");
         brightColorButton.setBackground(brightColor);
         brightColorButton.addActionListener((event) -> {
@@ -57,6 +60,7 @@ public class ThresholdEffectDialog extends JDialog {
             setVisible(false);
             paintPanel.removePreview();
         });
+
         buttonPanel.add(brightColorButton);
         buttonPanel.add(darkColorButton);
         buttonPanel.add(button);

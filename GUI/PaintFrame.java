@@ -72,13 +72,24 @@ public class PaintFrame extends JFrame {
 
         JMenuItem greyscaleItem = new JMenuItem("Black and white");
         greyscaleItem.addActionListener((event) -> panel.applyEffect(new GreyscaleEffect()));
+        JMenuItem brightnessItem = new JMenuItem("Brightness");
+        brightnessItem.addActionListener((event) -> {
+            BrightnessEffectDialog brd = new BrightnessEffectDialog(this, panel);
+            brd.setVisible(true);
+        });
+        JMenuItem colorsItem = new JMenuItem("Colors");
+        colorsItem.addActionListener((event) -> {
+            ColorsEffectDialog cld = new ColorsEffectDialog(this, panel);
+            cld.setVisible(true);
+        });
         JMenuItem thresholdItem = new JMenuItem("Thresholding");
         thresholdItem.addActionListener((event) -> {
-            panel.dumpToImage();
             ThresholdEffectDialog trd = new ThresholdEffectDialog(this, panel);
             trd.setVisible(true);
         });
         effectsMenu.add(greyscaleItem);
+        effectsMenu.add(brightnessItem);
+        effectsMenu.add(colorsItem);
         effectsMenu.add(thresholdItem);
 
         JMenuItem blurItem = new JMenuItem("Blur");
