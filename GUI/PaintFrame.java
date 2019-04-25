@@ -72,6 +72,13 @@ public class PaintFrame extends JFrame {
 
         JMenuItem greyscaleItem = new JMenuItem("Black and white");
         greyscaleItem.addActionListener((event) -> panel.applyEffect(new GreyscaleEffect()));
+        JMenuItem invertItem = new JMenuItem("Invert");
+        invertItem.addActionListener((event) -> panel.applyEffect(new InvertEffect()));
+        JMenuItem flipItem = new JMenuItem("Flip image");
+        flipItem.addActionListener((event) -> {
+            FlipEffectDialog fed = new FlipEffectDialog(this, panel);
+            fed.setVisible(true);
+        });
         JMenuItem brightnessItem = new JMenuItem("Brightness");
         brightnessItem.addActionListener((event) -> {
             BrightnessEffectDialog brd = new BrightnessEffectDialog(this, panel);
@@ -88,6 +95,9 @@ public class PaintFrame extends JFrame {
             trd.setVisible(true);
         });
         effectsMenu.add(greyscaleItem);
+        effectsMenu.add(invertItem);
+        effectsMenu.add(flipItem);
+        effectsMenu.addSeparator();
         effectsMenu.add(brightnessItem);
         effectsMenu.add(colorsItem);
         effectsMenu.add(thresholdItem);
@@ -103,6 +113,7 @@ public class PaintFrame extends JFrame {
         });
         filterMenu.add(blurItem);
         filterMenu.add(sharpenItem);
+        filterMenu.addSeparator();
         filterMenu.add(customItem);
 
         menuBar.add(fileMenu);

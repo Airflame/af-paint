@@ -59,6 +59,7 @@ public class ThresholdEffectDialog extends JDialog {
             paintPanel.applyEffect(new ThresholdEffect(thresholdSlider.getValue(), brightColor, darkColor));
             setVisible(false);
             paintPanel.removePreview();
+            dispose();
         });
 
         buttonPanel.add(brightColorButton);

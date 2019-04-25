@@ -29,5 +29,6 @@ public class BrushRadiusDialog extends JDialog {
     private void getRadius() {
         paintPanel.setBrushRadius((double) spinner.getValue());
         setVisible(false);
+        dispose();
     }
 }

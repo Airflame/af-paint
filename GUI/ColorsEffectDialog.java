@@ -74,6 +74,7 @@ public class ColorsEffectDialog extends JDialog {
             paintPanel.applyEffect(new ColorsEffect(redSlider.getValue(), greenSlider.getValue(), blueSlider.getValue()));
             setVisible(false);
             paintPanel.removePreview();
+            dispose();
         });
         buttonPanel.add(button);
 

@@ -8,10 +8,10 @@ public class ThresholdEffect implements Effect {
     private Color brightColor;
     private Color darkColor;
 
-    public ThresholdEffect(int t, Color bc, Color dc) {
-        threshold = t;
-        brightColor = bc;
-        darkColor = dc;
+    public ThresholdEffect(int threshold, Color brightColor, Color darkColor) {
+        this.threshold = threshold;
+        this.brightColor = brightColor;
+        this.darkColor = darkColor;
     }
 
     @Override

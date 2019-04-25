@@ -67,5 +67,6 @@ public class CustomFilterDialog extends JDialog {
         }
         setVisible(false);
         paintPanel.applyEffect(new CustomFilter(kernel));
+        dispose();
     }
 }

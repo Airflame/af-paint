@@ -39,6 +39,7 @@ public class BrightnessEffectDialog extends JDialog {
                     brightnessSlider.getValue(), brightnessSlider.getValue()));
             setVisible(false);
             paintPanel.removePreview();
+            dispose();
         });
 
         brightnessPanel.add(new JLabel("Brightness:"), BorderLayout.NORTH);
