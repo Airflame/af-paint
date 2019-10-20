@@ -7,17 +7,20 @@ import javax.swing.filechooser.*;
 import javax.swing.filechooser.FileFilter;
 import javax.imageio.*;
 import java.awt.*;
+import java.awt.event.*;
 import java.awt.image.*;
 import java.io.*;
 
 public class PaintFrame extends JFrame {
     private PaintPanel panel;
     private Dimension size;
+    private final int widthInterval = 16;
+    private final int heightInterval = 61;
 
     public PaintFrame() {
         setTitle("AF-Paint");
         setLocationByPlatform(true);
-        size = new Dimension(500,500);
+        size = new Dimension(500 + widthInterval,500 + heightInterval);
         panel = new PaintPanel();
         JMenuBar menuBar = new JMenuBar();
 
@@ -79,6 +82,14 @@ public class PaintFrame extends JFrame {
             FlipEffectDialog fed = new FlipEffectDialog(this, panel);
             fed.setVisible(true);
         });
+        JMenuItem rotateItem = new JMenuItem("Rotate image");
+        rotateItem.addActionListener((event) -> {
+            size = new Dimension(
+                    (int)size.getHeight() - heightInterval + widthInterval,
+                    (int)size.getWidth() - widthInterval + heightInterval);
+            panel.applyEffect(new RotateEffect());
+            pack();
+        });
         JMenuItem brightnessItem = new JMenuItem("Brightness");
         brightnessItem.addActionListener((event) -> {
             BrightnessEffectDialog brd = new BrightnessEffectDialog(this, panel);
@@ -97,6 +108,7 @@ public class PaintFrame extends JFrame {
         effectsMenu.add(greyscaleItem);
         effectsMenu.add(invertItem);
         effectsMenu.add(flipItem);
+        effectsMenu.add(rotateItem);
         effectsMenu.addSeparator();
         effectsMenu.add(brightnessItem);
         effectsMenu.add(colorsItem);
@@ -123,6 +135,20 @@ public class PaintFrame extends JFrame {
         menuBar.add(filterMenu);
         add(panel);
         setJMenuBar(menuBar);
+
+        addComponentListener(new ComponentAdapter()
+        {
+            public void componentResized(ComponentEvent evt) {
+                int pw = getWidth() - widthInterval;
+                int ph = getHeight() - heightInterval;
+                panel.dumpToImage();
+                panel.setImage(
+                        panel.getImage().getSubimage(0, 0, pw, ph)
+                );
+                panel.setSize(pw, ph);
+                size = new Dimension(pw + widthInterval, ph + heightInterval);
+            }
+        });
         pack();
     }
 

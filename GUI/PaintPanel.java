@@ -154,4 +154,8 @@ public class PaintPanel extends JPanel {
         setImage(im);
         clearPaint();
     }
+
+    Dimension getImageSize() {
+        return new Dimension(image.getWidth(), image.getHeight());
+    }
 }
