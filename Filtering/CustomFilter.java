@@ -1,7 +1,7 @@
 package Filtering;
 
 public class CustomFilter extends AbstractFilter {
-    public CustomFilter(float[][] kernel) {
+    public CustomFilter(double[][] kernel) {
         this.kernel = kernel;
     }
 }

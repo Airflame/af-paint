@@ -11,7 +11,7 @@ public class CustomFilterDialog extends JDialog {
     private int size;
     private JSpinner sizeSpinner;
     private ArrayList<JSpinner> spinners;
-    private float[][] kernel;
+    private double[][] kernel;
 
     CustomFilterDialog(JFrame owner, PaintPanel panel) {
         super(owner, "Set custom filter", true);
@@ -57,7 +57,7 @@ public class CustomFilterDialog extends JDialog {
     }
 
     private void createKernel() {
-        kernel = new float[size][size];
+        kernel = new double[size][size];
         int i = 0;
         for (int y = 0; y < size; y++) {
             for (int x = 0; x < size; x++) {

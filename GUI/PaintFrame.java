@@ -57,8 +57,24 @@ public class PaintFrame extends JFrame {
         redoItem.addActionListener((event) -> panel.redo());
         redoItem.setAccelerator(KeyStroke.getKeyStroke('Y',
                 Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+        JMenuItem flipItem = new JMenuItem("Flip image");
+        flipItem.addActionListener((event) -> {
+            FlipEffectDialog fed = new FlipEffectDialog(this, panel);
+            fed.setVisible(true);
+        });
+        JMenuItem rotateItem = new JMenuItem("Rotate image");
+        rotateItem.addActionListener((event) -> {
+            size = new Dimension(
+                    (int)size.getHeight() - heightInterval + widthInterval,
+                    (int)size.getWidth() - widthInterval + heightInterval);
+            panel.applyEffect(new RotateEffect());
+            pack();
+        });
         editMenu.add(undoItem);
         editMenu.add(redoItem);
+        editMenu.addSeparator();
+        editMenu.add(flipItem);
+        editMenu.add(rotateItem);
 
         JMenuItem brushSizeItem = new JMenuItem("Set brush radius");
         brushSizeItem.addActionListener((event) -> {
@@ -77,19 +93,6 @@ public class PaintFrame extends JFrame {
         greyscaleItem.addActionListener((event) -> panel.applyEffect(new GreyscaleEffect()));
         JMenuItem invertItem = new JMenuItem("Invert");
         invertItem.addActionListener((event) -> panel.applyEffect(new InvertEffect()));
-        JMenuItem flipItem = new JMenuItem("Flip image");
-        flipItem.addActionListener((event) -> {
-            FlipEffectDialog fed = new FlipEffectDialog(this, panel);
-            fed.setVisible(true);
-        });
-        JMenuItem rotateItem = new JMenuItem("Rotate image");
-        rotateItem.addActionListener((event) -> {
-            size = new Dimension(
-                    (int)size.getHeight() - heightInterval + widthInterval,
-                    (int)size.getWidth() - widthInterval + heightInterval);
-            panel.applyEffect(new RotateEffect());
-            pack();
-        });
         JMenuItem brightnessItem = new JMenuItem("Brightness");
         brightnessItem.addActionListener((event) -> {
             BrightnessEffectDialog brd = new BrightnessEffectDialog(this, panel);
@@ -107,8 +110,6 @@ public class PaintFrame extends JFrame {
         });
         effectsMenu.add(greyscaleItem);
         effectsMenu.add(invertItem);
-        effectsMenu.add(flipItem);
-        effectsMenu.add(rotateItem);
         effectsMenu.addSeparator();
         effectsMenu.add(brightnessItem);
         effectsMenu.add(colorsItem);
@@ -118,6 +119,11 @@ public class PaintFrame extends JFrame {
         blurItem.addActionListener((event) -> panel.applyEffect(new BlurFilter()));
         JMenuItem sharpenItem = new JMenuItem("Sharpen");
         sharpenItem.addActionListener((event) -> panel.applyEffect(new SharpenFilter()));
+        JMenuItem edgeItem = new JMenuItem("Edge detection");
+        edgeItem.addActionListener((event) -> {
+            panel.applyEffect(new GreyscaleEffect());
+            panel.applyEffect(new EdgeFilter());
+        });
         JMenuItem customItem = new JMenuItem("Custom");
         customItem.addActionListener((event) -> {
             CustomFilterDialog cfd = new CustomFilterDialog(this, panel);
@@ -125,6 +131,7 @@ public class PaintFrame extends JFrame {
         });
         filterMenu.add(blurItem);
         filterMenu.add(sharpenItem);
+        filterMenu.add(edgeItem);
         filterMenu.addSeparator();
         filterMenu.add(customItem);
 

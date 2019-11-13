@@ -4,26 +4,13 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 abstract public class AbstractFilter implements Effect {
-    protected float kernel[][];
+    protected double kernel[][];
 
     public BufferedImage process(BufferedImage image) {
         BufferedImage result = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics gr = result.getGraphics();
         gr.drawImage(image, 0, 0, null);
         gr.dispose();
-        float sum = 0;
-        for (float[] row : kernel) {
-            for (float item : row) {
-                sum += item;
-            }
-        }
-        for (int x = 0; x < kernel.length; x++)
-        {
-            for (int y = 0; y < kernel.length; y++)
-            {
-                kernel[x][y] /= sum;
-            }
-        }
 
         int height = image.getHeight();
         int width = image.getWidth();
@@ -39,9 +26,9 @@ abstract public class AbstractFilter implements Effect {
                     for (int y = 0; y < kernel.length; y++)
                     {
                         Color c = new Color(image.getRGB(i+x-kernel.length/2, j+y-kernel.length/2));
-                        r += kernel[x][y] * c.getRed();
-                        g += kernel[x][y] * c.getGreen();
-                        b += kernel[x][y] * c.getBlue();
+                        r += kernel[y][x] * c.getRed();
+                        g += kernel[y][x] * c.getGreen();
+                        b += kernel[y][x] * c.getBlue();
                     }
                 }
                 if (r > 255)
