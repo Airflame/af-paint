@@ -14,38 +14,42 @@ public class PaintPanel extends JPanel {
     private double radius;
     private BufferedImage image;
     private BufferedImage preview;
-    private List<List<Point>> points;
-    private Stack<List<Point>> removedPoints;
+    private Stack<BufferedImage> previousImages;
+    private Stack<BufferedImage> removedImages;
+    private List<Point> path;
     private Color brushColor;
     private Color backgroundColor;
 
     PaintPanel() {
         radius = 5;
-        points = new ArrayList<>(25);
-        removedPoints = new Stack<>();
+        previousImages = new Stack<>();
+        removedImages = new Stack<>();
         brushColor = Color.BLACK;
         backgroundColor = Color.WHITE;
         setBackground(backgroundColor);
         MouseAdapter ma = new MouseAdapter() {
-            private List<Point> currentPath;
 
             @Override
             public void mousePressed(MouseEvent e) {
-                currentPath = new ArrayList<>(25);
-                currentPath.add(e.getPoint());
-                points.add(currentPath);
+                path = new ArrayList<>(25);
+                path.add(e.getPoint());
             }
 
             @Override
             public void mouseDragged(MouseEvent e) {
                 Point dragPoint = e.getPoint();
-                currentPath.add(dragPoint);
+                path.add(dragPoint);
                 repaint();
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                currentPath = null;
+                previousImages.push(image);
+                removedImages.clear();
+                BufferedImage im = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
+                paint(im.getGraphics());
+                setImage(im);
+                path = null;
             }
         };
         addMouseListener(ma);
@@ -60,12 +64,12 @@ public class PaintPanel extends JPanel {
         if (image != null) {
             g2d.drawImage(image, 0, 0, this);
         }
-        for (List<Point> path : points) {
+        if (path != null) {
             Point from = null;
             for (Point p : path) {
                 if (from != null) {
                     g2d.setColor(brushColor);
-                    g2d.setStroke(new BasicStroke((float)(radius)));
+                    g2d.setStroke(new BasicStroke((float) (radius)));
                     g2d.draw(new Line2D.Double(from.x, from.y, p.x, p.y));
                 }
                 from = p;
@@ -77,17 +81,16 @@ public class PaintPanel extends JPanel {
         g2d.dispose();
     }
 
-    void clearPaint() {
-        points.clear();
-        repaint();
-    }
-
     void clearImage() {
         image = null;
     }
 
+    void clearImageHistory() {
+        previousImages.clear();
+        removedImages.clear();
+    }
+
     void setImage(BufferedImage image) {
-        clearImage();
         this.image = image;
     }
 
@@ -106,7 +109,6 @@ public class PaintPanel extends JPanel {
     }
 
     void chooseBrushColor() {
-        dumpToImage();
         brushColor = JColorChooser.showDialog(null, "Choose brush color", brushColor);
     }
 
@@ -114,11 +116,9 @@ public class PaintPanel extends JPanel {
         backgroundColor = JColorChooser.showDialog(null, "Choose brush color", backgroundColor);
         setBackground(backgroundColor);
         clearImage();
-        clearPaint();
     }
 
     void setBrushRadius(double r) {
-        dumpToImage();
         radius = r;
     }
 
@@ -127,35 +127,25 @@ public class PaintPanel extends JPanel {
     }
 
     void undo() {
-        if (!points.isEmpty()) {
-            removedPoints.add(points.get(points.size()-1));
-            points.remove(points.size()-1);
-            repaint();
+        if (!previousImages.isEmpty()) {
+            removedImages.push(image);
+            setImage(previousImages.pop());
         }
-    }
-
-    void redo() {
-        if (!removedPoints.isEmpty()) {
-            points.add(removedPoints.pop());
-            repaint();
-        }
-    }
-
-    void applyEffect(Effect effect) {
-        if(preview == null)
-            dumpToImage();
-        setImage(effect.process(image));
         repaint();
     }
 
-    void dumpToImage() {
-        BufferedImage im = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
-        paint(im.getGraphics());
-        setImage(im);
-        clearPaint();
+    void redo() {
+        if (!removedImages.isEmpty()) {
+            previousImages.push(image);
+            setImage(removedImages.pop());
+        }
+        repaint();
     }
 
-    Dimension getImageSize() {
-        return new Dimension(image.getWidth(), image.getHeight());
+    void applyEffect(Effect effect) {
+        previousImages.push(image);
+        removedImages.clear();
+        setImage(effect.process(image));
+        repaint();
     }
 }

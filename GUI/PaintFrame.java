@@ -20,7 +20,7 @@ public class PaintFrame extends JFrame {
     public PaintFrame() {
         setTitle("AF-Paint");
         setLocationByPlatform(true);
-        size = new Dimension(500 + widthInterval,500 + heightInterval);
+        size = new Dimension(500 + widthInterval, 500 + heightInterval);
         panel = new PaintPanel();
         JMenuBar menuBar = new JMenuBar();
 
@@ -34,8 +34,8 @@ public class PaintFrame extends JFrame {
         JMenuItem openItem = new JMenuItem("Open");
         JMenuItem saveItem = new JMenuItem("Save");
         newItem.addActionListener((event) -> {
-            panel.clearPaint();
             panel.clearImage();
+            panel.clearImageHistory();
         });
         newItem.setAccelerator(KeyStroke.getKeyStroke('N',
                 Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
@@ -65,8 +65,8 @@ public class PaintFrame extends JFrame {
         JMenuItem rotateItem = new JMenuItem("Rotate image");
         rotateItem.addActionListener((event) -> {
             size = new Dimension(
-                    (int)size.getHeight() - heightInterval + widthInterval,
-                    (int)size.getWidth() - widthInterval + heightInterval);
+                    (int) size.getHeight() - heightInterval + widthInterval,
+                    (int) size.getWidth() - widthInterval + heightInterval);
             panel.applyEffect(new RotateEffect());
             pack();
         });
@@ -143,15 +143,15 @@ public class PaintFrame extends JFrame {
         add(panel);
         setJMenuBar(menuBar);
 
-        addComponentListener(new ComponentAdapter()
-        {
+        addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent evt) {
                 int pw = getWidth() - widthInterval;
                 int ph = getHeight() - heightInterval;
-                panel.dumpToImage();
-                panel.setImage(
-                        panel.getImage().getSubimage(0, 0, pw, ph)
-                );
+                if (panel.getImage() != null) {
+                    panel.setImage(
+                            panel.getImage().getSubimage(0, 0, pw, ph)
+                    );
+                }
                 panel.setSize(pw, ph);
                 size = new Dimension(pw + widthInterval, ph + heightInterval);
             }
@@ -194,7 +194,6 @@ public class PaintFrame extends JFrame {
                 BufferedImage buff = ImageIO.read(selectedFile);
                 size = new Dimension(buff.getWidth(), buff.getHeight());
                 panel.setImage(buff);
-                panel.clearPaint();
                 pack();
             } catch (IOException e) {
                 System.err.println("An IOException was caught :" + e.getMessage());

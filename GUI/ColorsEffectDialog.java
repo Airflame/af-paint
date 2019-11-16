@@ -15,7 +15,6 @@ public class ColorsEffectDialog extends JDialog {
     ColorsEffectDialog(JFrame owner, PaintPanel panel) {
         super(owner, "Colors", true);
         paintPanel = panel;
-        paintPanel.dumpToImage();
         setLocationByPlatform(true);
         setResizable(false);
         addWindowListener(new WindowAdapter() {

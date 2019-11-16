@@ -15,7 +15,6 @@ public class ThresholdEffectDialog extends JDialog {
     ThresholdEffectDialog(JFrame owner, PaintPanel panel) {
         super(owner, "Thresholding", true);
         paintPanel = panel;
-        paintPanel.dumpToImage();
         brightColor = Color.WHITE;
         darkColor = Color.BLACK;
         setLocationByPlatform(true);
