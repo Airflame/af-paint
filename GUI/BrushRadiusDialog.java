@@ -9,6 +9,7 @@ public class BrushRadiusDialog extends JDialog {
 
     BrushRadiusDialog(JFrame owner, PaintPanel panel) {
         super(owner, "Set brush radius", true);
+        setLocationByPlatform(true);
         paintPanel = panel;
         setLocationByPlatform(true);
         setResizable(false);

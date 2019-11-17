@@ -11,6 +11,7 @@ public class FlipEffectDialog extends JDialog {
 
     FlipEffectDialog(JFrame owner, PaintPanel panel) {
         super(owner, "Flip image", true);
+        setLocationByPlatform(true);
         paintPanel = panel;
         vertical = false;
         setLocationByPlatform(true);

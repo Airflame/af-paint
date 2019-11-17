@@ -108,12 +108,19 @@ public class PaintFrame extends JFrame {
             ThresholdEffectDialog trd = new ThresholdEffectDialog(this, panel);
             trd.setVisible(true);
         });
+        JMenuItem noiseItem = new JMenuItem("Generate noise");
+        noiseItem.addActionListener((event) -> {
+                NoiseEffectDialog nd = new NoiseEffectDialog(this, panel);
+                nd.setVisible(true);
+        });
         effectsMenu.add(greyscaleItem);
         effectsMenu.add(invertItem);
         effectsMenu.addSeparator();
         effectsMenu.add(brightnessItem);
         effectsMenu.add(colorsItem);
         effectsMenu.add(thresholdItem);
+        effectsMenu.addSeparator();
+        effectsMenu.add(noiseItem);
 
         JMenuItem blurItem = new JMenuItem("Blur");
         blurItem.addActionListener((event) -> panel.applyEffect(new BlurFilter()));

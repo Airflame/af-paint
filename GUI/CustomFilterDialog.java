@@ -15,6 +15,7 @@ public class CustomFilterDialog extends JDialog {
 
     CustomFilterDialog(JFrame owner, PaintPanel panel) {
         super(owner, "Set custom filter", true);
+        setLocationByPlatform(true);
         paintPanel = panel;
         setLocationByPlatform(true);
         setResizable(false);
@@ -38,11 +39,11 @@ public class CustomFilterDialog extends JDialog {
         size = (int) sizeSpinner.getValue();
         getContentPane().removeAll();
         JPanel kernelPanel = new JPanel();
-        kernelPanel.setLayout(new GridLayout(size+1, size));
+        kernelPanel.setLayout(new GridLayout(size + 1, size));
 
         ArrayList<SpinnerModel> models = new ArrayList<>();
         spinners = new ArrayList<>();
-        for (int i = 0; i < size*size; i++) {
+        for (int i = 0; i < size * size; i++) {
             SpinnerModel model = new SpinnerNumberModel(0, -10, 10, 1);
             JSpinner spinner = new JSpinner(model);
             models.add(model);
@@ -61,7 +62,7 @@ public class CustomFilterDialog extends JDialog {
         int i = 0;
         for (int y = 0; y < size; y++) {
             for (int x = 0; x < size; x++) {
-                kernel[y][x] = (float)((int) spinners.get(i).getValue());
+                kernel[y][x] = (float) ((int) spinners.get(i).getValue());
                 i++;
             }
         }

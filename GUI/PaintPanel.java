@@ -55,6 +55,10 @@ public class PaintPanel extends JPanel {
         addMouseListener(ma);
         addMouseMotionListener(ma);
         setBackground(Color.WHITE);
+        setSize(new Dimension(500, 500));
+        BufferedImage im = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
+        paint(im.getGraphics());
+        setImage(im);
     }
 
     @Override

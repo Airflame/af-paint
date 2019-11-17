@@ -14,6 +14,7 @@ public class ColorsEffectDialog extends JDialog {
 
     ColorsEffectDialog(JFrame owner, PaintPanel panel) {
         super(owner, "Colors", true);
+        setLocationByPlatform(true);
         paintPanel = panel;
         setLocationByPlatform(true);
         setResizable(false);
@@ -24,19 +25,19 @@ public class ColorsEffectDialog extends JDialog {
             }
         });
 
-        redSlider = new JSlider(JSlider.HORIZONTAL, -256,256,0);
+        redSlider = new JSlider(JSlider.HORIZONTAL, -256, 256, 0);
         redSlider.setMajorTickSpacing(128);
         redSlider.setMinorTickSpacing(16);
         redSlider.setPaintTicks(true);
         redSlider.setPaintLabels(true);
         redSlider.addChangeListener((event) -> refreshPreview());
-        greenSlider = new JSlider(JSlider.HORIZONTAL, -256,256,0);
+        greenSlider = new JSlider(JSlider.HORIZONTAL, -256, 256, 0);
         greenSlider.setMajorTickSpacing(128);
         greenSlider.setMinorTickSpacing(16);
         greenSlider.setPaintTicks(true);
         greenSlider.setPaintLabels(true);
         greenSlider.addChangeListener((event) -> refreshPreview());
-        blueSlider = new JSlider(JSlider.HORIZONTAL, -256,256,0);
+        blueSlider = new JSlider(JSlider.HORIZONTAL, -256, 256, 0);
         blueSlider.setMajorTickSpacing(128);
         blueSlider.setMinorTickSpacing(16);
         blueSlider.setPaintTicks(true);

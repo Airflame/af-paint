@@ -14,18 +14,14 @@ abstract public class AbstractFilter implements Effect {
 
         int height = image.getHeight();
         int width = image.getWidth();
-        for (int i = kernel.length/2; i < width-kernel.length/2; i++)
-        {
-            for (int j = kernel.length/2; j < height-kernel.length/2; j++)
-            {
+        for (int i = kernel.length / 2; i < width - kernel.length / 2; i++) {
+            for (int j = kernel.length / 2; j < height - kernel.length / 2; j++) {
                 int r = 0;
                 int g = 0;
                 int b = 0;
-                for (int x = 0; x < kernel.length; x++)
-                {
-                    for (int y = 0; y < kernel.length; y++)
-                    {
-                        Color c = new Color(image.getRGB(i+x-kernel.length/2, j+y-kernel.length/2));
+                for (int x = 0; x < kernel.length; x++) {
+                    for (int y = 0; y < kernel.length; y++) {
+                        Color c = new Color(image.getRGB(i + x - kernel.length / 2, j + y - kernel.length / 2));
                         r += kernel[y][x] * c.getRed();
                         g += kernel[y][x] * c.getGreen();
                         b += kernel[y][x] * c.getBlue();
