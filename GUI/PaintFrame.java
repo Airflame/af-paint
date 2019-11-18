@@ -110,8 +110,8 @@ public class PaintFrame extends JFrame {
         });
         JMenuItem noiseItem = new JMenuItem("Generate noise");
         noiseItem.addActionListener((event) -> {
-                NoiseEffectDialog nd = new NoiseEffectDialog(this, panel);
-                nd.setVisible(true);
+            NoiseEffectDialog nd = new NoiseEffectDialog(this, panel);
+            nd.setVisible(true);
         });
         effectsMenu.add(greyscaleItem);
         effectsMenu.add(invertItem);

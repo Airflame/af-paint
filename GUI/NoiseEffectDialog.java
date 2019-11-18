@@ -9,6 +9,7 @@ import java.awt.event.*;
 public class NoiseEffectDialog extends JDialog {
     private PaintPanel paintPanel;
     private JSlider noiseSlider;
+    private JCheckBox checkBox;
 
     NoiseEffectDialog(JFrame owner, PaintPanel panel) {
         super(owner, "Generate noise", true);
@@ -23,7 +24,7 @@ public class NoiseEffectDialog extends JDialog {
             }
         });
 
-        noiseSlider = new JSlider(JSlider.HORIZONTAL, 0, 100, 0);
+        noiseSlider = new JSlider(JSlider.HORIZONTAL, 0, 120, 0);
         noiseSlider.setMajorTickSpacing(20);
         noiseSlider.setMinorTickSpacing(5);
         noiseSlider.setPaintTicks(true);
@@ -35,21 +36,30 @@ public class NoiseEffectDialog extends JDialog {
 
         JButton button = new JButton("OK");
         button.addActionListener((event) -> {
-            paintPanel.applyEffect(new NoiseEffect(noiseSlider.getValue()));
+            paintPanel.applyEffect(new NoiseEffect(noiseSlider.getValue(), checkBox.isSelected()));
             setVisible(false);
             paintPanel.removePreview();
             dispose();
         });
 
+        checkBox = new JCheckBox("Monochromatic");
+        checkBox.setSelected(true);
+        checkBox.addItemListener((event) -> refreshPreview());
+
+        JPanel controlPanel = new JPanel();
+        controlPanel.setLayout(new BorderLayout());
+        controlPanel.add(noiseSlider, BorderLayout.NORTH);
+        controlPanel.add(checkBox, BorderLayout.SOUTH);
+
         noisePanel.add(new JLabel("Set strength:"), BorderLayout.NORTH);
-        noisePanel.add(noiseSlider, BorderLayout.CENTER);
+        noisePanel.add(controlPanel, BorderLayout.CENTER);
         noisePanel.add(button, BorderLayout.SOUTH);
         add(noisePanel);
         pack();
     }
 
     private void refreshPreview() {
-        NoiseEffect n = new NoiseEffect(noiseSlider.getValue());
+        NoiseEffect n = new NoiseEffect(noiseSlider.getValue(), checkBox.isSelected());
         paintPanel.setPreview(n.process(paintPanel.getImage()));
     }
 }
