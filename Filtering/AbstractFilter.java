@@ -33,12 +33,12 @@ abstract public class AbstractFilter implements Effect {
                     g = 255;
                 if (b > 255)
                     b = 255;
-                while (r < 0)
-                    r += 128;
-                while (g < 0)
-                    g += 128;
-                while (b < 0)
-                    b += 128;
+                if (r < 0)
+                    r = 0;
+                if (g < 0)
+                    g = 0;
+                if (b < 0)
+                    b = 0;
                 Color c = new Color(r, g, b);
                 result.setRGB(i, j, c.getRGB());
             }
