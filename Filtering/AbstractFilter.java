@@ -14,17 +14,27 @@ abstract public class AbstractFilter implements Effect {
 
         int height = image.getHeight();
         int width = image.getWidth();
-        for (int i = kernel.length / 2; i < width - kernel.length / 2; i++) {
-            for (int j = kernel.length / 2; j < height - kernel.length / 2; j++) {
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
                 int r = 0;
                 int g = 0;
                 int b = 0;
-                for (int x = 0; x < kernel.length; x++) {
-                    for (int y = 0; y < kernel.length; y++) {
-                        Color c = new Color(image.getRGB(i + x - kernel.length / 2, j + y - kernel.length / 2));
-                        r += kernel[y][x] * c.getRed();
-                        g += kernel[y][x] * c.getGreen();
-                        b += kernel[y][x] * c.getBlue();
+                for (int kern_x = 0; kern_x < kernel.length; kern_x++) {
+                    for (int kern_y = 0; kern_y < kernel.length; kern_y++) {
+                        int x = i + kern_x - kernel.length / 2;
+                        int y = j + kern_y - kernel.length / 2;
+                        if (x < 0)
+                            x = 0;
+                        if (x >= width)
+                            x = width - 1;
+                        if (y < 0)
+                            y = 0;
+                        if (y >= height)
+                            y = height - 1;
+                        Color c = new Color(image.getRGB(x, y));
+                        r += kernel[kern_y][kern_x] * c.getRed();
+                        g += kernel[kern_y][kern_x] * c.getGreen();
+                        b += kernel[kern_y][kern_x] * c.getBlue();
                     }
                 }
                 if (r > 255)

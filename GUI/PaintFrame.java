@@ -36,15 +36,16 @@ public class PaintFrame extends JFrame {
         newItem.addActionListener((event) -> {
             panel.clearImage();
             panel.clearImageHistory();
+            panel.repaint();
         });
         newItem.setAccelerator(KeyStroke.getKeyStroke('N',
-                Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+                Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
         openItem.addActionListener((event) -> open());
         openItem.setAccelerator(KeyStroke.getKeyStroke('O',
-                Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+                Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
         saveItem.addActionListener((event) -> save());
         saveItem.setAccelerator(KeyStroke.getKeyStroke('S',
-                Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+                Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
         fileMenu.add(newItem);
         fileMenu.add(openItem);
         fileMenu.add(saveItem);
@@ -52,11 +53,11 @@ public class PaintFrame extends JFrame {
         JMenuItem undoItem = new JMenuItem("Undo");
         undoItem.addActionListener((event) -> panel.undo());
         undoItem.setAccelerator(KeyStroke.getKeyStroke('Z',
-                Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+                Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
         JMenuItem redoItem = new JMenuItem("Redo");
         redoItem.addActionListener((event) -> panel.redo());
         redoItem.setAccelerator(KeyStroke.getKeyStroke('Y',
-                Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+                Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
         JMenuItem flipItem = new JMenuItem("Flip image");
         flipItem.addActionListener((event) -> {
             FlipEffectDialog fed = new FlipEffectDialog(this, panel);
