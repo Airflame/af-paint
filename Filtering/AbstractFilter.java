@@ -14,27 +14,27 @@ abstract public class AbstractFilter implements Effect {
 
         int height = image.getHeight();
         int width = image.getWidth();
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
                 int r = 0;
                 int g = 0;
                 int b = 0;
-                for (int kern_x = 0; kern_x < kernel.length; kern_x++) {
-                    for (int kern_y = 0; kern_y < kernel.length; kern_y++) {
-                        int x = i + kern_x - kernel.length / 2;
-                        int y = j + kern_y - kernel.length / 2;
-                        if (x < 0)
-                            x = 0;
-                        if (x >= width)
-                            x = width - 1;
-                        if (y < 0)
-                            y = 0;
-                        if (y >= height)
-                            y = height - 1;
-                        Color c = new Color(image.getRGB(x, y));
-                        r += kernel[kern_y][kern_x] * c.getRed();
-                        g += kernel[kern_y][kern_x] * c.getGreen();
-                        b += kernel[kern_y][kern_x] * c.getBlue();
+                for (int kernX = 0; kernX < kernel.length; kernX++) {
+                    for (int kernY = 0; kernY < kernel.length; kernY++) {
+                        int i = x + kernX - kernel.length / 2;
+                        int j = y + kernY - kernel.length / 2;
+                        if (i < 0)
+                            i = 0;
+                        if (i >= width)
+                            i = width - 1;
+                        if (j < 0)
+                            j = 0;
+                        if (j >= height)
+                            j = height - 1;
+                        Color c = new Color(image.getRGB(i, j));
+                        r += kernel[kernY][kernX] * c.getRed();
+                        g += kernel[kernY][kernX] * c.getGreen();
+                        b += kernel[kernY][kernX] * c.getBlue();
                     }
                 }
                 if (r > 255)
@@ -50,7 +50,7 @@ abstract public class AbstractFilter implements Effect {
                 if (b < 0)
                     b = 0;
                 Color c = new Color(r, g, b);
-                result.setRGB(i, j, c.getRGB());
+                result.setRGB(x, y, c.getRGB());
             }
         }
         return result;
