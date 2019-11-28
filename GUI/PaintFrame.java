@@ -7,21 +7,20 @@ import javax.swing.filechooser.*;
 import javax.swing.filechooser.FileFilter;
 import javax.imageio.*;
 import java.awt.*;
-import java.awt.event.*;
 import java.awt.image.*;
 import java.io.*;
 
 public class PaintFrame extends JFrame {
     private PaintPanel panel;
-    private Dimension size;
-    private final int widthInterval = 16;
-    private final int heightInterval = 61;
+    private Dimension panelSize;
 
     public PaintFrame() {
         setTitle("AF-Paint");
         setLocationByPlatform(true);
-        size = new Dimension(500 + widthInterval, 500 + heightInterval);
+        setLayout(new FlowLayout(FlowLayout.CENTER, 0,0));
         panel = new PaintPanel();
+        panelSize = new Dimension(500, 500);
+        panel.setPreferredSize(panelSize);
         JMenuBar menuBar = new JMenuBar();
 
         JMenu fileMenu = new JMenu("File");
@@ -34,9 +33,8 @@ public class PaintFrame extends JFrame {
         JMenuItem openItem = new JMenuItem("Open");
         JMenuItem saveItem = new JMenuItem("Save");
         newItem.addActionListener((event) -> {
-            panel.clearImage();
-            panel.clearImageHistory();
-            panel.repaint();
+            NewFileDialog nfd = new NewFileDialog(this, panel);
+            nfd.setVisible(true);
         });
         newItem.setAccelerator(KeyStroke.getKeyStroke('N',
                 Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
@@ -65,9 +63,8 @@ public class PaintFrame extends JFrame {
         });
         JMenuItem rotateItem = new JMenuItem("Rotate image");
         rotateItem.addActionListener((event) -> {
-            size = new Dimension(
-                    (int) size.getHeight() - heightInterval + widthInterval,
-                    (int) size.getWidth() - widthInterval + heightInterval);
+            panelSize = new Dimension(panel.getPreferredSize().height, panel.getPreferredSize().width);
+            panel.setPreferredSize(panelSize);
             panel.applyEffect(new RotateEffect());
             pack();
         });
@@ -151,25 +148,7 @@ public class PaintFrame extends JFrame {
         add(panel);
         setJMenuBar(menuBar);
 
-        addComponentListener(new ComponentAdapter() {
-            public void componentResized(ComponentEvent evt) {
-                int pw = getWidth() - widthInterval;
-                int ph = getHeight() - heightInterval;
-                if (panel.getImage() != null) {
-                    panel.setImage(
-                            panel.getImage().getSubimage(0, 0, pw, ph)
-                    );
-                }
-                panel.setSize(pw, ph);
-                size = new Dimension(pw + widthInterval, ph + heightInterval);
-            }
-        });
         pack();
-    }
-
-    @Override
-    public Dimension getPreferredSize() {
-        return size;
     }
 
     private void save() {
@@ -200,8 +179,11 @@ public class PaintFrame extends JFrame {
             File selectedFile = fileChooser.getSelectedFile();
             try {
                 BufferedImage buff = ImageIO.read(selectedFile);
-                size = new Dimension(buff.getWidth(), buff.getHeight());
+                panelSize = new Dimension(buff.getWidth(), buff.getHeight());
                 panel.setImage(buff);
+                panel.setSize(panelSize);
+                panel.setPreferredSize(panelSize);
+                panel.repaint();
                 pack();
             } catch (IOException e) {
                 System.err.println("An IOException was caught :" + e.getMessage());

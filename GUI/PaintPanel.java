@@ -86,7 +86,8 @@ public class PaintPanel extends JPanel {
     }
 
     void clearImage() {
-        image = null;
+        image = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
+        paint(image.getGraphics());
     }
 
     void clearImageHistory() {
