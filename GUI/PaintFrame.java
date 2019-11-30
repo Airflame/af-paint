@@ -12,15 +12,14 @@ import java.io.*;
 
 public class PaintFrame extends JFrame {
     private PaintPanel panel;
-    private Dimension panelSize;
 
     public PaintFrame() {
         setTitle("AF-Paint");
         setLocationByPlatform(true);
-        setLayout(new FlowLayout(FlowLayout.CENTER, 0,0));
+        setResizable(false);
+        setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
         panel = new PaintPanel();
-        panelSize = new Dimension(500, 500);
-        panel.setPreferredSize(panelSize);
+        panel.setPreferredSize(new Dimension(500, 500));
         JMenuBar menuBar = new JMenuBar();
 
         JMenu fileMenu = new JMenu("File");
@@ -63,8 +62,7 @@ public class PaintFrame extends JFrame {
         });
         JMenuItem rotateItem = new JMenuItem("Rotate image");
         rotateItem.addActionListener((event) -> {
-            panelSize = new Dimension(panel.getPreferredSize().height, panel.getPreferredSize().width);
-            panel.setPreferredSize(panelSize);
+            panel.setPreferredSize(new Dimension(panel.getPreferredSize().height, panel.getPreferredSize().width));
             panel.applyEffect(new RotateEffect());
             pack();
         });
@@ -80,9 +78,9 @@ public class PaintFrame extends JFrame {
             brd.setVisible(true);
         });
         JMenuItem brushColorItem = new JMenuItem("Change brush color");
-        brushColorItem.addActionListener((event) -> panel.chooseBrushColor());
+        brushColorItem.addActionListener((event) -> chooseBrushColor());
         JMenuItem backgroundColorItem = new JMenuItem("Change background color");
-        backgroundColorItem.addActionListener((event) -> panel.chooseBackgroundColor());
+        backgroundColorItem.addActionListener((event) -> chooseBackgroundColor());
         optionsMenu.add(brushSizeItem);
         optionsMenu.add(brushColorItem);
         optionsMenu.add(backgroundColorItem);
@@ -179,15 +177,24 @@ public class PaintFrame extends JFrame {
             File selectedFile = fileChooser.getSelectedFile();
             try {
                 BufferedImage buff = ImageIO.read(selectedFile);
-                panelSize = new Dimension(buff.getWidth(), buff.getHeight());
                 panel.setImage(buff);
-                panel.setSize(panelSize);
-                panel.setPreferredSize(panelSize);
+                panel.setSize(new Dimension(buff.getWidth(), buff.getHeight()));
+                panel.setPreferredSize(new Dimension(buff.getWidth(), buff.getHeight()));
                 panel.repaint();
                 pack();
             } catch (IOException e) {
                 System.err.println("An IOException was caught :" + e.getMessage());
             }
         }
+    }
+
+    private void chooseBrushColor() {
+        panel.setBrushColor(JColorChooser.showDialog(null, "Choose brush color",
+                panel.getBrushColor()));
+    }
+
+    private void chooseBackgroundColor() {
+        panel.setBackgroundColor(JColorChooser.showDialog(null, "Choose brush color",
+                panel.getBackgroundColor()));
     }
 }

@@ -14,7 +14,6 @@ public class BrightnessEffectDialog extends JDialog {
         super(owner, "Brightness", true);
         setLocationByPlatform(true);
         paintPanel = panel;
-        setLocationByPlatform(true);
         setResizable(false);
         addWindowListener(new WindowAdapter() {
             @Override

@@ -113,14 +113,22 @@ public class PaintPanel extends JPanel {
         repaint();
     }
 
-    void chooseBrushColor() {
-        brushColor = JColorChooser.showDialog(null, "Choose brush color", brushColor);
+    void setBrushColor(Color color) {
+        brushColor = color;
     }
 
-    void chooseBackgroundColor() {
-        backgroundColor = JColorChooser.showDialog(null, "Choose brush color", backgroundColor);
+    Color getBrushColor() {
+        return brushColor;
+    }
+
+    void setBackgroundColor(Color color) {
+        backgroundColor = color;
         setBackground(backgroundColor);
         clearImage();
+    }
+
+    Color getBackgroundColor() {
+        return backgroundColor;
     }
 
     void setBrushRadius(double r) {
