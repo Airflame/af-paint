@@ -150,15 +150,69 @@ public class PaintFrame extends JFrame {
     }
 
     private void save() {
-        BufferedImage im = new BufferedImage(panel.getWidth(), panel.getHeight(), BufferedImage.TYPE_INT_ARGB);
-        JFileChooser fileChooser = new JFileChooser();
+        BufferedImage im = new BufferedImage(panel.getWidth(), panel.getHeight(), BufferedImage.TYPE_INT_RGB);
         panel.paint(im.getGraphics());
+
+        FileFilter pngFilter = new FileFilter() {
+            public String getDescription() {
+                return "PNG Images (*.png)";
+            }
+
+            public boolean accept(File f) {
+                if (f.isDirectory()) {
+                    return true;
+                } else {
+                    return f.getName().toLowerCase().endsWith(".png");
+                }
+            }
+        };
+        FileFilter jpgFilter = new FileFilter() {
+            public String getDescription() {
+                return "JPEG Images (*.jpg)";
+            }
+
+            public boolean accept(File f) {
+                if (f.isDirectory()) {
+                    return true;
+                } else {
+                    return f.getName().toLowerCase().endsWith(".jpg");
+                }
+            }
+        };
+        FileFilter bmpFilter = new FileFilter() {
+            public String getDescription() {
+                return "BMP Images (*.bmp)";
+            }
+
+            public boolean accept(File f) {
+                if (f.isDirectory()) {
+                    return true;
+                } else {
+                    return f.getName().toLowerCase().endsWith(".bmp");
+                }
+            }
+        };
+
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.addChoosableFileFilter(pngFilter);
+        fileChooser.addChoosableFileFilter(jpgFilter);
+        fileChooser.addChoosableFileFilter(bmpFilter);
+        fileChooser.setAcceptAllFileFilterUsed(false);
 
         int returnValue = fileChooser.showSaveDialog(null);
         if (returnValue == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
+            FileFilter selectedFilter = fileChooser.getFileFilter();
+            String description = selectedFilter.getDescription();
+            String formatName = description.substring(0, description.indexOf(" "));
+            String extension = description.substring(description.length() - 5, description.length() - 1);
+            String absolutePath = selectedFile.getAbsolutePath();
+            if (!absolutePath.endsWith(extension))
+                absolutePath += extension;
+            selectedFile = new File(absolutePath);
             try {
-                ImageIO.write(im, "png", selectedFile);
+                boolean val = ImageIO.write(im, formatName, selectedFile);
+                System.out.println(val);
             } catch (IOException e) {
                 System.err.println("An IOException was caught :" + e.getMessage());
             }
